@@ -1,0 +1,136 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url(https://fonts.googleapis.com/css?family=Inconsolata);
+@import url(https://fonts.googleapis.com/css?family=Pacifico); 
+@import url(https://fonts.googleapis.com/css?family=Arbutus+Slab);
+
+/* 
+http://www.colorfavs.com/palettes/35453/
+
+*/
+
+
+body{
+ /* background-color: #C02942; */
+
+  /*background: #fe9f4c  ; */
+ font-family: 'Arbutus Slab', serif;
+  font-size: 12px;
+
+   -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;    
+  
+}
+
+a{
+  text-decoration: none;
+  color:black;
+  font-weight:bold;
+}
+h1,h2{
+    
+  /*font-family: 'Pacifico', cursive; */
+  text-align:center;
+  font-size: 26px;
+
+   -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */  
+  cursor:default;  
+   margin-top: 10px;
+  
+
+
+}
+h3,h4{
+  
+  /*font-family: 'Pacifico', cursive; */
+  font-size: 20px;
+   
+   -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */  
+  cursor:default;  
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+}
+
+.vertical-align{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+     -ms-transform: translateY(-50%);/* IE 9 */
+    -webkit-transform: translateY(-50%); /* Chrome, Safari, Opera */
+  
+  width:100%;
+  text-align:center;
+
+  padding:0pc;
+}
+#opening-quote{
+  text-align:center;
+  font-style: italic;
+  font-size:140%;
+}
+#kemp-pic{
+  position:relative;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:20px;
+  height:150px;
+  width:150px;
+  background: url(http://waytofamous.com/images/ross-kemp-05.jpg);
+  background-size:100%;
+   box-shadow: 0px 0px, 0px 5px 10px rgba(0, 0, 0, 0.2); 
+}
+#bio{
+  position:relative;
+  font-size:100%;
+  text-align: justify;
+  width:500px;
+  overflow:hidden;
+  margin-left:auto;
+  margin-right:auto;
+}
+#other-pics{
+  text-align:center;
+  font-style: normal;
+  color:grey;
+  font-size:120%;
+}
+#gallery-con{
+  position:relative;
+  margin-top:10px;
+  width:505px;
+  
+  height:100px;
+  margin-left: auto;
+  margin-right:auto;
+}
+.single-pic{
+    position:relative;
+
+  margin-left:50px;
+   height:100px;
+  width:100px;
+     box-shadow: 0px 0px, 0px 5px 10px rgba(0, 0, 0, 0.2); 
+   float:left;  
+   background-repeat: no-repeat;
+}
+#ross1{ 
+  background: url(http://www.wafflemag.com/wp-content/uploads/2014/09/ross-kemp-folded-08.jpg);
+  background-size:100%;
+}
+#ross2{
+    background: url(http://www.wafflemag.com/wp-content/uploads/2014/09/ross-kemp-folded-02.jpg);
+   background-size:100%;
+}
+
+#ross3{
+    background: url(http://america.pink/images/3/8/1/4/8/0/8/en/2-ross-kemp.jpg);
+    background-size:100%;
+}
