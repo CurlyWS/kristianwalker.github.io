@@ -1,4 +1,6 @@
 
+
+// trimming if past max chars in calc-display_inner
 $('document').ready(function(){
 		 
 		var opRange = ["+","-","×","÷"];
@@ -12,6 +14,7 @@ $('document').ready(function(){
 			for(var x in buttons){
 				
 				var addButtonClass;
+				console.log("buttons[x]: " + buttons[x]);
 
 				if(opRange.includes(buttons[x] ) || buttons[x]==="%"  ||  buttons[x]==="CE"){ 
 					addButtonClass =  "op";
@@ -25,10 +28,13 @@ $('document').ready(function(){
 				if(buttons[x] ==="AC" ){
 					addButtonClass = "clear";
 				}
-	
+				//if(buttons[buttons[x]])
+				console.log("addBUttonClass chosen: " + addButtonClass);
 				var buttonHtml = 	'<button id="' + buttons[x]	+ "_button" + '" class="calc-button secondaryClass">' +	buttons[x]	+ '</button>';
 				
 				if(addButtonClass){
+					console.log("about to add secondary class because addButtonClass is found");
+					//insert the scondary class
 					buttonHtml = buttonHtml.replace("secondaryClass",addButtonClass);
 				}else{
 					buttonHtml = buttonHtml.replace("secondaryClass", '');
@@ -38,18 +44,21 @@ $('document').ready(function(){
 				//add rendered button
 				$( "#buttons-con_inner" ).append( buttonHtml);
 			}//** for
-		}// endof creatButtons
+
+		}
+
+
 
 	/*--- Dsiplay ---*/
 		var calcDis = $('#calc-display_inner');
 		var memDis = $('#memory-display');
-
+		console.log("calcDis: " + calcDis);
 		var fontFamily = calcDis.css("font-family");
 		var fontSize = calcDis.css("font-size");
 		var disWidth = calcDis.css("width");
 		var disMargins = parseInt(calcDis.css("margin-left"),10) + parseInt(calcDis.css("margin-right"),10);
 		
-		/* find the width of one character */
+		/* find the length width of one character */
 		function getCharWidth(fontFamily, fontSize) {
 		    var div = document.createElement("div");
 		    div.style.position = "absolute";
@@ -67,12 +76,17 @@ $('document').ready(function(){
 	
 		// limiting num of chars in display	
 		function displayTrim(){
+			console.log("---maxCharCheck()---");
 			var calcDisText = calcDis.text().trim();
+			console.log("num of chars in display: " + calcDisText.length + " text - > " + calcDisText );
+	
 			if(calcDisText.length > maxChars){
 				calcDis.text(calcDisText.substring(0,maxChars));
 			}
 			//if ( calcDis.text().length )
 			calcDisText = calcDis.text().trim();
+			console.log("num of chars in display: " + calcDisText.length + " text - > " + calcDisText );
+			console.log("--------------------");
 		}
 
 		displayTrim();
@@ -86,18 +100,25 @@ $('document').ready(function(){
  			memDis.html(str);
  		}
 
+	/*-----------------*/
+
  		var inputStr = "";
  		var ansMem ;
  		var ansDisplayed = false;
 
+
  		$('.calc-button').click(function(){
 		 	
+		 	console.log("---.calc-button.click()---");
+		 	console.log("inputStr : " + inputStr);
+		 	console.log("incalcbutton ansDisplayed: " + ansDisplayed);
 		 	var pressed = this.id.split("_")[0]; //the id of these classes are +_button, -_button etc. 
 		 	var lastChar = inputStr.trim()[inputStr.trim().length - 1];
 	 		var lastChars = inputStr.trim().substring(inputStr.length-2,inputStr.length);
 	 	
 			function addOperator(){
 	 				if(lastChar == "÷" || lastChar == "×" || lastChar == "-" || lastChar == "+" ){
+	 						// ÷ is last thing
 	 						inputStr = inputStr.substr(0, inputStr.length-1)  + pressed ;
 	 				}else{
 	 						inputStr = inputStr +  pressed ;
@@ -107,22 +128,27 @@ $('document').ready(function(){
 
 			function addDecimal(){
 
+					console.log("---addDecimal()---");
 					var split=	splitStr(inputStr);
-	
+				
 					if(opRange.includes(lastChar) || inputStr.length===0 ){   // if the lastChar was an op it means you are starting with decimal pt
 						inputStr  +=  "0"+pressed;
 						updateDisplay(inputStr);
 					 	return;
 					}else{ // there a number
 
-						//this checks the last nmber of the split str to see if a decimal point is already included 
+							//this checks the last nmber of the split str to see if a decimal point is already included 
 						if(split[split.length-1].indexOf('.') === -1){
 					
+							console.log("proceed - decimal not found in last number of str");
 							var lastNum = parseFloat(split[(split.length)-1]);
-
+							console.log("lastNUm: " + lastNum);
+							console.log(typeof lastNum);
 							if(lastNum % 1 === 0){
 								//no decimal in last num
+								console.log("lastnum %1 != 0 : "  + (lastNum % 1));
 								inputStr  +=  pressed;
+								console.log(inputStr);
 					 			updateDisplay(inputStr);
 					 			return;
 				 			}
@@ -130,11 +156,13 @@ $('document').ready(function(){
 			 			}else{
 			 				console.log("decimal point already exists!");
 			 			}
-					}
+					}		
 			}
 
-			 function splitStr(str){
 
+		
+			 function splitStr(str){
+						console.log("base str:" + str);
 						var strArr =[];
 						var lastNumIndex = 0; // used to find the index of last number
 						
@@ -151,24 +179,29 @@ $('document').ready(function(){
 						}
 						str = trimOperators(str);
 						for(i=0; i<str.length; i++){
+							//%
 
 							if(i===0 && str[i] === "-"){// do nothing if starts with -
 							}else{
+								console.log(str[i]);
 								if (str[i] == "+" || str[i] =="×" || str[i] == "÷" || str[i] == "-" ){
 									
 									if(str[i-1] !== "+" && str[i-1] !=="×" && str[i-1] !== "÷" && str[i-1] !== "-"){
 										//this pushes the number preceding it
+										
 										strArr.push(str.substring(lastNumIndex,i));
-					
+										
 										//This pushes the operator
 										strArr.push(str[i]);
 										// ad plus 1 to make sure you don't push the operator next time
 										
 										lastNumIndex=i+1;
-
+										console.log("lastNUmIndex: " + lastNumIndex);
+									}else{
+										// the minus will carry over and be included in the next num
 									}
 								}
-						
+								//if end
 								if(i==str.length-1){
 									// last part of loop so push the number
 									strArr.push(str.substring(lastNumIndex,str.length));
@@ -181,14 +214,18 @@ $('document').ready(function(){
 			} // split strm
 
 			function calcAns(str){
+				
+				console.log("------calcAns()------");
 
 				function ansReplace(str){
+					console.log("---in ansReplace()---");
 					return str.replace(/Ans/g,ansMem);
 				}
-				
 				str = ansReplace(str);
 				var split = splitStr(str);
 				var ans;
+				console.log("split below: ");
+				console.log( split);
 				
 				var math = {
 				    "+": function (x, y) { return x + y },
@@ -196,7 +233,7 @@ $('document').ready(function(){
 				    "×": function (x, y) { return x * y },
 				    "÷": function (x, y) { return x / y },
 				};
-				
+
 				 var i=0;
 				 var first, second, op;
 				 
@@ -204,42 +241,57 @@ $('document').ready(function(){
 				 
 				 	if(i!==0){
 					 	if(split[i] ==="+" || split[i] =="×" || split[i] == "÷" || split[i]== "-"){
+					 		console.log("is op: " + split[i]);
 					 		op = split[i];
-	
+					 	}else{
+					 		console.log("is num: " + split[i]);
+					 		
+					 		// if there is a %
 					 		if(split[i].indexOf("%") === -1){
+					 			console.log("have not found % in: " + split[i]);
 					 			second = parseFloat(split[i]);
+					 	
 					 		}else{ // if % is found
 					 			// if the op before is ÷ or × convert the % to a decimal
 					 			if(op ==="÷" || op==="×" ){
+					 				console.log("op before % is ÷ or x");
 					 				second = 0.01 * parseFloat(split[i]); // convert to decimal
 					 			}
 					 			// if the op before is - or + convert the % to a % of the first number
 					 			if(op ==="+" || op==="-" ){
 					 				console.log("op before % is + or -");
 					 				second = first * ( 0.01 * parseFloat(split[i])); // convert to decimal
-					 			}	
-					 		}
+					 			}		 				 			
+					 		}		 		
 					 	}
 				 	}else{
 				 		first=parseFloat(split[i]);
 				 	}
 				 
-				 	// if we have all we need
+				 	console.log("first: " + first + " op: " + op + " second: " + second);
+				 	
+				 
 				 	if(first,op,second){
 				 		ans = math[op](first,second);
 				 		first = ans;
 				 		op, second = undefined;
 				 	}
-
+					if(ans){
+					console.log("ans : " + ans);
+					}
+				 
 				 	split.shift;
-				 	i++;			 	
+				 	i++;
+				 	
 				 }
 
 				updateDisplay(ans);
 				if(ans){
 					inputStr = ans.toString()
 					ansMem = ans.toString();
-				};	
+				};
+				
+
 			}// end of calc Ans
 
 			/* --- CALC FUNCTIONS ------- */
@@ -257,6 +309,9 @@ $('document').ready(function(){
 	 				updateDisplay(inputStr);
 	 		}
 	 		if( pressed == "Ans"){
+	 				console.log("ansMem: " + ansMem);
+	 			
+				
 				if(ansMem){//if there is an answer in memory
 					if(inputStr.length < maxChars-3){	// if max in str isn't hit -3 (-3 because of length on 'Ans')
 							if(lastChar != "%" && !numRange.includes(lastChar)){
@@ -272,13 +327,19 @@ $('document').ready(function(){
 	 		}
 	 		if( pressed == "="){
 	 				updateMem(inputStr);
+	 				console.log("inputStr before send : " + inputStr);
 	 				var result = calcAns(inputStr);
 	 				updateDisplay(result);
 	 				ansDisplayed = true;
+	 				// if next thing to be pressed i a number set input string to 0
+	 				console.log("just hit = ansDisplayed =  " + ansDisplayed);
 	 		}
 
 	 		// check that the str length is less
 			if(inputStr.length < maxChars){	
+				//console.log("str is longer than maxchars");
+				
+				/* ------ DECIMAL POINTS ------ */
 
 				if(	pressed== "."){
 					ansDisplayed=false;
@@ -287,14 +348,18 @@ $('document').ready(function(){
 
 				/* ------ NUMBERS ------ */
 			 	if( parseInt(pressed) >= 0 &&  parseInt(pressed) <= 9  ){
-
+		 			console.log("bout to parseInt ansDisplayed = " + ansDisplayed);
 		 			if(ansDisplayed){// it means you are writing a number straight after the answer is displayed
 		 				//reset inputStr & ansMem
 		 				inputStr = "";
+		 				console.log("just set input string to false and about to do the same with ansDisplayed");
+		 				console.log("yo yo ansDisplayed+ " + ansDisplayed + " inputStr : " + inputStr);
 		 				ansDisplayed=false;
+
 		 			}
 
 		 			if(lastChar != "%"){
+		 				console.log(pressed + " its a number");
 		 				inputStr += pressed;
 		 				updateDisplay(inputStr);
 		 			}else{
@@ -318,7 +383,9 @@ $('document').ready(function(){
 		 					break;
 		 				case "-":
 		 					// add the negative symbol
+		 					console.log("- pressed now!");
 		 					if( lastChar == "+" || lastChar == "-" ){
+		 						console.log("lastchar is + or -");
 		 						inputStr =  inputStr.substr(0, inputStr.length-1) +  pressed ;
 		 					}else{
 		 						inputStr = inputStr +  pressed ;
@@ -327,6 +394,7 @@ $('document').ready(function(){
 		 					// if last char pressed is x or / then you need to lock and wait for a number
 		 					break;
 		 				case "+":
+		 						console.log("lastChars is /- or x- ");
 		 						addOperator();
 		 						updateDisplay(inputStr);	
 		 					break;
@@ -341,14 +409,21 @@ $('document').ready(function(){
 
 
 	 			}else{
+
 	 				console.log("+- or /- last thing");
 	 			}
 
 	 		}else{
 	 			console.log("over the max chars");
 	 		}
-		}); // click buttons function
 
-}); // endof document.ready()
+
+		}); // click buttons function
+			
+
+	/*-----------------*/
+
+
+});
 
 	

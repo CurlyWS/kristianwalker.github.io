@@ -1,7 +1,7 @@
 $( document ).ready(function() {
 	
 	$('#search').on('submit', function (e) {
-		$('#search').css({"display":"none"}).after('<img src="http://www.statistics.gov.my/censusatlas/images/loading_1.gif" id="loading_gif">');
+		$('#search').css({"display":"none"}).after('<img src="https://www.statistics.gov.my/censusatlas/images/loading_1.gif" id="loading_gif">');
 		$('.error').remove();
 	    e.preventDefault();
 	    searchWiki($('#search input[type=search]').val());

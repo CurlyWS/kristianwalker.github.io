@@ -14,7 +14,7 @@ $( document ).ready(function() {
 //FREEGEOIP 
 
  $.ajax({
-        url: 'http://freegeoip.net/json/',
+        url: 'https://freegeoip.net/json/',
         type: 'POST',
         dataType: 'jsonp',
         success: function(location) {
@@ -59,7 +59,7 @@ var url = "http://api.openweathermap.org/data/2.5/weather?q=hanoi&APPID=7b5db511
         	console.log("cccountry pasesed to WEAHTER CALL :" + country);
 
         	var weather = data["weather"][0]["main"];
-    		var iconUrl = "http://openweathermap.org/img/w/" + data["weather"][0]["icon"] + ".png";
+    		var iconUrl = "https://openweathermap.org/img/w/" + data["weather"][0]["icon"] + ".png";
     		var temp =data["main"]["temp"];
     		var humid = data["main"]["humidity"];
 
